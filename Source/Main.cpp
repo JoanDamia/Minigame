@@ -35,7 +35,6 @@
 
 #define SHIP_SPEED			   8
 #define MAX_SHIP_SHOTS		  32
-#define SHOT_SPEED			  12
 #define SCROLL_SPEED		   5
 
 enum WindowEvent
@@ -54,11 +53,6 @@ enum KeyState
 	KEY_UP				// RELEASED (DOWN->DEFAULT)
 };
 
-struct Projectile
-{
-	int x, y;
-	bool alive;
-};
 
 // Global context to store our game state data
 struct GlobalState
@@ -81,7 +75,6 @@ struct GlobalState
 	// Texture variables
 	SDL_Texture* background;
 	SDL_Texture* ship;
-	SDL_Texture* shot;
 	int background_width;
 
 	// Audio variables
@@ -90,8 +83,6 @@ struct GlobalState
 	// Game elements
 	int ship_x;
 	int ship_y;
-	Projectile shots[MAX_SHIP_SHOTS];
-	int last_shot;
 	int scroll;
 };
 
@@ -116,7 +107,7 @@ void Start()
 	//if (SDL_InitSubSystem(SDL_INIT_EVENTS) < 0) printf("SDL_EVENTS could not be initialized! SDL_Error: %s\n", SDL_GetError());
 
 	// Init window
-	state.window = SDL_CreateWindow("Super Awesome Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+	state.window = SDL_CreateWindow("2021: Space Odyssey", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 	state.surface = SDL_GetWindowSurface(state.window);
 
 	// Init renderer
@@ -140,7 +131,6 @@ void Start()
 	IMG_Init(IMG_INIT_PNG);
 	state.background = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/background.jpg"));
 	state.ship = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/ship.png"));
-	state.shot = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/shot.png"));
 	SDL_QueryTexture(state.background, NULL, NULL, &state.background_width, NULL);
 
 	// L4: TODO 1: Init audio system and load music/fx
@@ -155,7 +145,6 @@ void Start()
 	// Init game variables
 	state.ship_x = 100;
 	state.ship_y = SCREEN_HEIGHT / 2;
-	state.last_shot = 0;
 	state.scroll = 0;
 }
 
@@ -307,29 +296,14 @@ void MoveStuff()
 	else if (state.keyboard[SDL_SCANCODE_RIGHT] == KEY_REPEAT) state.ship_x += SHIP_SPEED;
 
 	// L2: DONE 8: Initialize a new shot when SPACE key is pressed
-	if (state.keyboard[SDL_SCANCODE_SPACE] == KEY_DOWN)
-	{
-		if (state.last_shot == MAX_SHIP_SHOTS) state.last_shot = 0;
-
-		state.shots[state.last_shot].alive = true;
-		state.shots[state.last_shot].x = state.ship_x + 35;
-		state.shots[state.last_shot].y = state.ship_y - 3;
-		state.last_shot++;
+	
 
 		// L4: TODO 4: Play sound fx_shoot
         
 	}
 
 	// Update active shots
-	for (int i = 0; i < MAX_SHIP_SHOTS; ++i)
-	{
-		if (state.shots[i].alive)
-		{
-			if (state.shots[i].x < SCREEN_WIDTH) state.shots[i].x += SHOT_SPEED;
-			else state.shots[i].alive = false;
-		}
-	}
-}
+
 
 // ----------------------------------------------------------------
 void Draw()
@@ -357,16 +331,6 @@ void Draw()
 	SDL_RenderCopy(state.renderer, state.ship, NULL, &rec);
 
 	// L2: DONE 9: Draw active shots
-	rec.w = 64; rec.h = 64;
-	for (int i = 0; i < MAX_SHIP_SHOTS; ++i)
-	{
-		if (state.shots[i].alive)
-		{
-			//DrawRectangle(state.shots[i].x, state.shots[i].y, 50, 20, { 0, 250, 0, 255 });
-			rec.x = state.shots[i].x; rec.y = state.shots[i].y;
-			SDL_RenderCopy(state.renderer, state.shot, NULL, &rec);
-		}
-	}
 
 	// Finally present framebuffer
 	SDL_RenderPresent(state.renderer);
