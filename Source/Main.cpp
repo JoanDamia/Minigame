@@ -26,8 +26,8 @@
 // -------------------------------------------------------------------------
 // Defines, Types and Globals
 // -------------------------------------------------------------------------
-#define SCREEN_WIDTH		1280
-#define SCREEN_HEIGHT		 720
+#define SCREEN_WIDTH		728
+#define SCREEN_HEIGHT		 410
 
 #define MAX_KEYBOARD_KEYS	 256
 #define MAX_MOUSE_BUTTONS	   5
@@ -139,7 +139,7 @@ void Start()
 
 	// Init image system and load textures
 	IMG_Init(IMG_INIT_PNG);
-	state.background = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/background.png"));
+	state.background = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/background.jpg"));
 	state.ship = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/ship.png"));
 	state.shot = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/shot.png"));
 	SDL_QueryTexture(state.background, NULL, NULL, &state.background_width, NULL);
