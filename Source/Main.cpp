@@ -296,7 +296,7 @@ void MoveStuff()
 		//else if (state.keyboard[SDL_SCANCODE_DOWN] == KEY_REPEAT) state.ship_y += SHIP_SPEED;
 	}
 	else if (state.ship_x < 155) {
-		state.ship_x = 154;
+		state.ship_x = 155;
 	}
 	else {
 		state.ship_x = 680;
