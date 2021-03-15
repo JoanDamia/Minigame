@@ -26,8 +26,8 @@
 // -------------------------------------------------------------------------
 // Defines, Types and Globals
 // -------------------------------------------------------------------------
-#define SCREEN_WIDTH		728
-#define SCREEN_HEIGHT		 410
+#define SCREEN_WIDTH		901
+#define SCREEN_HEIGHT		1000
 
 #define MAX_KEYBOARD_KEYS	 256
 #define MAX_MOUSE_BUTTONS	   5
@@ -76,6 +76,7 @@ struct GlobalState
 	SDL_Texture* background;
 	SDL_Texture* ship;
 	int background_width;
+	int background_height;
 
 	// Audio variables
 	Mix_Music* music;
@@ -129,9 +130,9 @@ void Start()
 
 	// Init image system and load textures
 	IMG_Init(IMG_INIT_PNG);
-	state.background = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/background.jpg"));
+	state.background = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/Definitivisimo.png"));
 	state.ship = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/ship.png"));
-	SDL_QueryTexture(state.background, NULL, NULL, &state.background_width, NULL);
+	SDL_QueryTexture(state.background, NULL, NULL, &state.background_width, &state.background_height);
 
 	// L4: TODO 1: Init audio system and load music/fx
 	// EXTRA: Handle the case the sound can not be loaded!
@@ -143,8 +144,8 @@ void Start()
 
 
 	// Init game variables
-	state.ship_x = 100;
-	state.ship_y = SCREEN_HEIGHT / 2;
+	state.ship_x = SCREEN_WIDTH/ 2;
+	state.ship_y = SCREEN_HEIGHT / 1.3;
 	state.scroll = 0;
 }
 
@@ -288,21 +289,22 @@ bool CheckInput()
 // ----------------------------------------------------------------
 void MoveStuff()
 {
-	// L2: DONE 7: Move the ship with arrow keys
-	//if (state.keyboard[SDL_SCANCODE_UP] == KEY_REPEAT) state.ship_y -= SHIP_SPEED;
-	//else if (state.keyboard[SDL_SCANCODE_DOWN] == KEY_REPEAT) state.ship_y += SHIP_SPEED;
-
-	if (state.keyboard[SDL_SCANCODE_LEFT] == KEY_REPEAT) state.ship_x -= SHIP_SPEED;
-	else if (state.keyboard[SDL_SCANCODE_RIGHT] == KEY_REPEAT) state.ship_x += SHIP_SPEED;
-
-	// L2: DONE 8: Initialize a new shot when SPACE key is pressed
-	
-
-		// L4: TODO 4: Play sound fx_shoot
+	if ((state.ship_x >= 155) && (state.ship_x <= 680)) {
+		if (state.keyboard[SDL_SCANCODE_LEFT] == KEY_REPEAT) state.ship_x -= SHIP_SPEED;
+		else if (state.keyboard[SDL_SCANCODE_RIGHT] == KEY_REPEAT) state.ship_x += SHIP_SPEED;
+		//if (state.keyboard[SDL_SCANCODE_UP] == KEY_REPEAT) state.ship_y -= SHIP_SPEED;
+		//else if (state.keyboard[SDL_SCANCODE_DOWN] == KEY_REPEAT) state.ship_y += SHIP_SPEED;
+	}
+	else if (state.ship_x < 155) {
+		state.ship_x = 155;
+	}
+	else {
+		state.ship_x = 680;
+	}
         
 	}
 
-	// Update active shots
+	
 
 
 // ----------------------------------------------------------------
@@ -313,14 +315,14 @@ void Draw()
 	SDL_RenderClear(state.renderer);
 
 	// Draw background and scroll
-	state.scroll += SCROLL_SPEED;
-	if (state.scroll >= state.background_width)	state.scroll = 0;
+	state.scroll -= SCROLL_SPEED;
+	if (state.scroll <= 0)	state.scroll = state.background_height;
 
 	// Draw background texture (two times for scrolling effect)
 	// NOTE: rec rectangle is being reused for next draws
-	SDL_Rect rec = { -state.scroll, 0, state.background_width, SCREEN_HEIGHT };
+	SDL_Rect rec = {  0, -state.scroll, state.background_width, state.background_height };
 	SDL_RenderCopy(state.renderer, state.background, NULL, &rec);
-	rec.x += state.background_width;
+	rec.y += state.background_height;
 	SDL_RenderCopy(state.renderer, state.background, NULL, &rec);
 
 	// Draw ship rectangle
