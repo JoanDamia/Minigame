@@ -86,7 +86,6 @@ struct GlobalState
 
 	// Audio variables
 	Mix_Music* music;
-	Mix_Chunk* fx_shoot;
 
 	// Game elements
 	int ship_x;
@@ -149,8 +148,6 @@ void Start()
 	Mix_Init(MIX_INIT_OGG);
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024);
 	state.music = Mix_LoadMUS("Assets/Music.ogg");
-	state.fx_shoot = Mix_LoadWAV("Assets/laser.wav");
-
 	// L4: TODO 2: Start playing loaded music
 	Mix_PlayMusic(state.music, -1);
 
