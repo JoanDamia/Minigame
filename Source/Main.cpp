@@ -94,6 +94,7 @@ GlobalState state;
 // Some helpful functions to draw basic shapes
 // -------------------------------------------------------------------------
 static void DrawRectangle(int x, int y, int width, int height, SDL_Color color);
+static void Spawn(int x, int y, int width, int height, SDL_Color color);
 static void DrawLine(int x1, int y1, int x2, int y2, SDL_Color color);
 static void DrawCircle(int x, int y, int radius, SDL_Color color);
 
@@ -370,7 +371,17 @@ void DrawRectangle(int x, int y, int width, int height, SDL_Color color)
 
 	if (result != 0) printf("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
 }
+// -------------------------------------------------------------------------
+void Spawn(int x, int y, int width, int height, SDL_Color color){
+	SDL_SetRenderDrawBlendMode(state.renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawColor(state.renderer, color.r, color.g, color.b, color.a);
 
+	SDL_Rect rec = { x, y, width, height };
+
+	int result = SDL_RenderFillRect(state.renderer, &rec);
+
+	if (result != 0) printf("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
+}
 // ----------------------------------------------------------------
 void DrawLine(int x1, int y1, int x2, int y2, SDL_Color color)
 {
