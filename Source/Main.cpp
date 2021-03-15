@@ -54,6 +54,14 @@ enum KeyState
 	KEY_UP				// RELEASED (DOWN->DEFAULT)
 };
 
+enum GameScreen
+{
+	LOGO = 0,
+	TITLE,
+	GAMEPLAY,
+	ENDING
+};
+
 struct Projectile
 {
 	int x, y;
@@ -94,6 +102,8 @@ struct GlobalState
 	Projectile shots[MAX_SHIP_SHOTS];
 	int last_shot;
 	int scroll;
+
+	GameScreen currentScreen;		// 0-LOGO, 1-TITLE, 2-GAMEPLAY, 3-ENDING
 };
 
 // Global game state variable
@@ -152,13 +162,15 @@ void Start()
 	state.fx_shoot = Mix_LoadWAV("Assets/laser.wav");
 
 	// L4: TODO 2: Start playing loaded music
-	Mix_PlayMusic(state.music, -1);
+	//Mix_PlayMusic(state.music, -1);
 
 	// Init game variables
 	state.ship_x = 100;
 	state.ship_y = SCREEN_HEIGHT / 2;
 	state.last_shot = 0;
 	state.scroll = 0;
+
+	state.currentScreen = 0;
 }
 
 // ----------------------------------------------------------------
@@ -173,6 +185,7 @@ void Finish()
 	// Unload textures and deinitialize image system
 	SDL_DestroyTexture(state.background);
 	SDL_DestroyTexture(state.ship);
+	SDL_DestroyTexture(state.shot);
 	IMG_Quit();
 
 	// L2: DONE 3: Close game controller
@@ -198,13 +211,13 @@ void Finish()
 bool CheckInput()
 {
 	// Update current mouse buttons state 
-    // considering previous mouse buttons state
+	// considering previous mouse buttons state
 	for (int i = 0; i < MAX_MOUSE_BUTTONS; ++i)
 	{
 		if (state.mouse_buttons[i] == KEY_DOWN) state.mouse_buttons[i] = KEY_REPEAT;
 		if (state.mouse_buttons[i] == KEY_UP) state.mouse_buttons[i] = KEY_IDLE;
 	}
-    
+
 	// Gather the state of all input devices
 	// WARNING: It modifies global keyboard and mouse state but 
 	// its precision may be not enough
@@ -220,61 +233,61 @@ bool CheckInput()
 	{
 		switch (event.type)
 		{
-			case SDL_QUIT: state.window_events[WE_QUIT] = true; break;
-			case SDL_WINDOWEVENT:
+		case SDL_QUIT: state.window_events[WE_QUIT] = true; break;
+		case SDL_WINDOWEVENT:
+		{
+			switch (event.window.event)
 			{
-				switch (event.window.event)
-				{
-					//case SDL_WINDOWEVENT_LEAVE:
-					case SDL_WINDOWEVENT_HIDDEN:
-					case SDL_WINDOWEVENT_MINIMIZED:
-					case SDL_WINDOWEVENT_FOCUS_LOST: state.window_events[WE_HIDE] = true; break;
-					//case SDL_WINDOWEVENT_ENTER:
-					case SDL_WINDOWEVENT_SHOWN:
-					case SDL_WINDOWEVENT_FOCUS_GAINED:
-					case SDL_WINDOWEVENT_MAXIMIZED:
-					case SDL_WINDOWEVENT_RESTORED: state.window_events[WE_SHOW] = true; break;
-					case SDL_WINDOWEVENT_CLOSE: state.window_events[WE_QUIT] = true; break;
-					default: break;
-				}
-			} break;
-			// L2: DONE 4: Check mouse events for button state
-			case SDL_MOUSEBUTTONDOWN: state.mouse_buttons[event.button.button - 1] = KEY_DOWN; break;
-			case SDL_MOUSEBUTTONUP:	state.mouse_buttons[event.button.button - 1] = KEY_UP; break;
-			case SDL_MOUSEMOTION:
-			{
-				state.mouse_x = event.motion.x;
-				state.mouse_y = event.motion.y;
-			} break;
-			case SDL_JOYAXISMOTION:
-			{
-				// Motion on controller 0
-				if (event.jaxis.which == 0)
-				{
-					// X axis motion
-					if (event.jaxis.axis == 0)
-					{
-						if (event.jaxis.value < -JOYSTICK_DEAD_ZONE) state.gamepad_axis_x_dir = -1;
-						else if (event.jaxis.value > JOYSTICK_DEAD_ZONE) state.gamepad_axis_x_dir = 1;
-						else state.gamepad_axis_x_dir = 0;
-					}
-					// Y axis motion
-					else if (event.jaxis.axis == 1)
-					{
-						if (event.jaxis.value < -JOYSTICK_DEAD_ZONE) state.gamepad_axis_y_dir = -1;
-						else if (event.jaxis.value > JOYSTICK_DEAD_ZONE) state.gamepad_axis_y_dir = 1;
-						else state.gamepad_axis_y_dir = 0;
-					}
-				}
-			} break;
+				//case SDL_WINDOWEVENT_LEAVE:
+			case SDL_WINDOWEVENT_HIDDEN:
+			case SDL_WINDOWEVENT_MINIMIZED:
+			case SDL_WINDOWEVENT_FOCUS_LOST: state.window_events[WE_HIDE] = true; break;
+				//case SDL_WINDOWEVENT_ENTER:
+			case SDL_WINDOWEVENT_SHOWN:
+			case SDL_WINDOWEVENT_FOCUS_GAINED:
+			case SDL_WINDOWEVENT_MAXIMIZED:
+			case SDL_WINDOWEVENT_RESTORED: state.window_events[WE_SHOW] = true; break;
+			case SDL_WINDOWEVENT_CLOSE: state.window_events[WE_QUIT] = true; break;
 			default: break;
+			}
+		} break;
+		// L2: DONE 4: Check mouse events for button state
+		case SDL_MOUSEBUTTONDOWN: state.mouse_buttons[event.button.button - 1] = KEY_DOWN; break;
+		case SDL_MOUSEBUTTONUP:	state.mouse_buttons[event.button.button - 1] = KEY_UP; break;
+		case SDL_MOUSEMOTION:
+		{
+			state.mouse_x = event.motion.x;
+			state.mouse_y = event.motion.y;
+		} break;
+		case SDL_JOYAXISMOTION:
+		{
+			// Motion on controller 0
+			if (event.jaxis.which == 0)
+			{
+				// X axis motion
+				if (event.jaxis.axis == 0)
+				{
+					if (event.jaxis.value < -JOYSTICK_DEAD_ZONE) state.gamepad_axis_x_dir = -1;
+					else if (event.jaxis.value > JOYSTICK_DEAD_ZONE) state.gamepad_axis_x_dir = 1;
+					else state.gamepad_axis_x_dir = 0;
+				}
+				// Y axis motion
+				else if (event.jaxis.axis == 1)
+				{
+					if (event.jaxis.value < -JOYSTICK_DEAD_ZONE) state.gamepad_axis_y_dir = -1;
+					else if (event.jaxis.value > JOYSTICK_DEAD_ZONE) state.gamepad_axis_y_dir = 1;
+					else state.gamepad_axis_y_dir = 0;
+				}
+			}
+		} break;
+		default: break;
 		}
 	}
 
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
 
 	// L2: DONE 5: Update keyboard keys state
-    // Consider previous keys states for KEY_DOWN and KEY_UP
+	// Consider previous keys states for KEY_DOWN and KEY_UP
 	for (int i = 0; i < MAX_KEYBOARD_KEYS; ++i)
 	{
 		// A value of 1 means that the key is pressed and a value of 0 means that it is not
@@ -302,35 +315,54 @@ bool CheckInput()
 // ----------------------------------------------------------------
 void MoveStuff()
 {
-	// L2: DONE 7: Move the ship with arrow keys
-	if (state.keyboard[SDL_SCANCODE_UP] == KEY_REPEAT) state.ship_y -= SHIP_SPEED;
-	else if (state.keyboard[SDL_SCANCODE_DOWN] == KEY_REPEAT) state.ship_y += SHIP_SPEED;
-
-	if (state.keyboard[SDL_SCANCODE_LEFT] == KEY_REPEAT) state.ship_x -= SHIP_SPEED;
-	else if (state.keyboard[SDL_SCANCODE_RIGHT] == KEY_REPEAT) state.ship_x += SHIP_SPEED;
-
-	// L2: DONE 8: Initialize a new shot when SPACE key is pressed
-	if (state.keyboard[SDL_SCANCODE_SPACE] == KEY_DOWN)
+	switch (state.currentScreen)
 	{
-		if (state.last_shot == MAX_SHIP_SHOTS) state.last_shot = 0;
-
-		state.shots[state.last_shot].alive = true;
-		state.shots[state.last_shot].x = state.ship_x + 35;
-		state.shots[state.last_shot].y = state.ship_y - 3;
-		state.last_shot++;
-
-		// L4: TODO 4: Play sound fx_shoot
-		Mix_PlayChannel(-1, state.fx_shoot, 0);
-	}
-
-	// Update active shots
-	for (int i = 0; i < MAX_SHIP_SHOTS; ++i)
+	case LOGO:
 	{
-		if (state.shots[i].alive)
+		if (state.keyboard[SDL_SCANCODE_RETURN] == KEY_DOWN) state.currentScreen = 1;
+	} break;
+	case TITLE:
+	{
+		if (state.keyboard[SDL_SCANCODE_RETURN] == KEY_DOWN) state.currentScreen = 2;
+	} break;
+	case GAMEPLAY:
+	{
+		// L2: DONE 7: Move the ship with arrow keys
+		if (state.keyboard[SDL_SCANCODE_UP] == KEY_REPEAT) state.ship_y -= SHIP_SPEED;
+		else if (state.keyboard[SDL_SCANCODE_DOWN] == KEY_REPEAT) state.ship_y += SHIP_SPEED;
+
+		if (state.keyboard[SDL_SCANCODE_LEFT] == KEY_REPEAT) state.ship_x -= SHIP_SPEED;
+		else if (state.keyboard[SDL_SCANCODE_RIGHT] == KEY_REPEAT) state.ship_x += SHIP_SPEED;
+
+		// L2: DONE 8: Initialize a new shot when SPACE key is pressed
+		if (state.keyboard[SDL_SCANCODE_SPACE] == KEY_DOWN)
 		{
-			if (state.shots[i].x < SCREEN_WIDTH) state.shots[i].x += SHOT_SPEED;
-			else state.shots[i].alive = false;
+			if (state.last_shot == MAX_SHIP_SHOTS) state.last_shot = 0;
+
+			state.shots[state.last_shot].alive = true;
+			state.shots[state.last_shot].x = state.ship_x + 35;
+			state.shots[state.last_shot].y = state.ship_y - 3;
+			state.last_shot++;
+
+			// L4: TODO 4: Play sound fx_shoot
+			Mix_PlayChannel(-1, state.fx_shoot, 0);
 		}
+
+		// Update active shots
+		for (int i = 0; i < MAX_SHIP_SHOTS; ++i)
+		{
+			if (state.shots[i].alive)
+			{
+				if (state.shots[i].x < SCREEN_WIDTH) state.shots[i].x += SHOT_SPEED;
+				else state.shots[i].alive = false;
+			}
+		}
+	} break;
+	case ENDING:
+	{
+
+	} break;
+	default: break;
 	}
 }
 
@@ -341,40 +373,58 @@ void Draw()
 	SDL_SetRenderDrawColor(state.renderer, 100, 149, 237, 255);
 	SDL_RenderClear(state.renderer);
 
-	// Draw background and scroll
-	state.scroll += SCROLL_SPEED;
-	if (state.scroll >= state.background_width)	state.scroll = 0;
-
-	// Draw background texture (two times for scrolling effect)
-	// NOTE: rec rectangle is being reused for next draws
-	SDL_Rect rec = { -state.scroll, 0, state.background_width, SCREEN_HEIGHT };
-	SDL_RenderCopy(state.renderer, state.background, NULL, &rec);
-	rec.x += state.background_width;
-	SDL_RenderCopy(state.renderer, state.background, NULL, &rec);
-
-	// Draw ship rectangle
-	//DrawRectangle(state.ship_x, state.ship_y, 250, 100, { 255, 0, 0, 255 });
-
-	// Draw ship texture
-	rec.x = state.ship_x; rec.y = state.ship_y; rec.w = 64; rec.h = 64;
-	SDL_RenderCopy(state.renderer, state.ship, NULL, &rec);
-
-	// L2: DONE 9: Draw active shots
-	rec.w = 64; rec.h = 64;
-	for (int i = 0; i < MAX_SHIP_SHOTS; ++i)
+	switch (state.currentScreen)
 	{
-		if (state.shots[i].alive)
+	case LOGO:
+	{
+
+	} break;
+	case TITLE:
+	{
+
+	} break;
+	case GAMEPLAY:
+	{
+		// Draw background and scroll
+		state.scroll += SCROLL_SPEED;
+		if (state.scroll >= state.background_width)	state.scroll = 0;
+
+		// Draw background texture (two times for scrolling effect)
+		// NOTE: rec rectangle is being reused for next draws
+		SDL_Rect rec = { -state.scroll, 0, state.background_width, SCREEN_HEIGHT };
+		SDL_RenderCopy(state.renderer, state.background, NULL, &rec);
+		rec.x += state.background_width;
+		SDL_RenderCopy(state.renderer, state.background, NULL, &rec);
+
+		// Draw ship rectangle
+		//DrawRectangle(state.ship_x, state.ship_y, 250, 100, { 255, 0, 0, 255 });
+
+		// Draw ship texture
+		rec.x = state.ship_x; rec.y = state.ship_y; rec.w = 64; rec.h = 64;
+		SDL_RenderCopy(state.renderer, state.ship, NULL, &rec);
+
+		// L2: DONE 9: Draw active shots
+		rec.w = 64; rec.h = 64;
+		for (int i = 0; i < MAX_SHIP_SHOTS; ++i)
 		{
-			//DrawRectangle(state.shots[i].x, state.shots[i].y, 50, 20, { 0, 250, 0, 255 });
-			rec.x = state.shots[i].x; rec.y = state.shots[i].y;
-			SDL_RenderCopy(state.renderer, state.shot, NULL, &rec);
+			if (state.shots[i].alive)
+			{
+				//DrawRectangle(state.shots[i].x, state.shots[i].y, 50, 20, { 0, 250, 0, 255 });
+				rec.x = state.shots[i].x; rec.y = state.shots[i].y;
+				SDL_RenderCopy(state.renderer, state.shot, NULL, &rec);
+			}
 		}
+	} break;
+	case ENDING:
+	{
+
+	} break;
+	default: break;
 	}
 
 	// Finally present framebuffer
 	SDL_RenderPresent(state.renderer);
 }
-
 
 // Main Entry point
 // -------------------------------------------------------------------------
