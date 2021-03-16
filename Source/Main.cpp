@@ -100,9 +100,17 @@ struct GlobalState
 	// Game elements
 	int ship_x;
 	int ship_y;
+	int ship_w;
+	int ship_h;
 	int scroll;
 	Projectile shots[MAX_SHIP_SHOTS];
 	int last_shot;
+	int shot_x;
+	int shot_y;
+	int shot_w;
+	int shot_h;
+	
+	
 
 	GameScreen currentScreen;		// 0-LOGO, 1-TITLE, 2-GAMEPLAY, 3-ENDING
 };
@@ -124,6 +132,8 @@ static void DrawCircle(int x, int y, int radius, SDL_Color color);
 void Start()
 {
 
+	state.ship_w = 64;
+	state.ship_h = 64;
 	// Initialize SDL internal global state
 	SDL_Init(SDL_INIT_EVERYTHING);
 
@@ -172,6 +182,7 @@ void Start()
 	// Init game variables
 	state.ship_x = SCREEN_WIDTH / 2;
 	state.ship_y = SCREEN_HEIGHT / 1.3;
+	
 	state.scroll = 0;
 	state.last_shot = 0;
 
@@ -182,7 +193,8 @@ void Start()
 	{
 
 
-
+		state.shot_w = 64;
+		state.shot_h = 124;
 
 		srand(time(NULL));
 		if (state.last_shot == MAX_SHIP_SHOTS) state.last_shot = 0;
@@ -314,6 +326,7 @@ void Finish()
 	Mix_Quit();
 
 	// Unload textures and deinitialize image system
+	SDL_DestroyTexture(state.shot);
 	SDL_DestroyTexture(state.background);
 	SDL_DestroyTexture(state.ship);
 	IMG_Quit();
@@ -335,6 +348,8 @@ void Finish()
 
 	// Free any game allocated memory
 	free(state.keyboard);
+
+
 }
 
 // ----------------------------------------------------------------
@@ -457,7 +472,27 @@ void MoveStuff()
 	} break;
 	case GAMEPLAY:
 	{
+		
 		if ((state.ship_x >= 155) && (state.ship_x <= 680)) {
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+			if (state.keyboard[SDL_SCANCODE_LEFT] == KEY_REPEAT) state.ship_x -= SHIP_SPEED;
+			else if (state.keyboard[SDL_SCANCODE_RIGHT] == KEY_REPEAT) state.ship_x += SHIP_SPEED;
+			//if (state.keyboard[SDL_SCANCODE_UP] == KEY_REPEAT) state.ship_y -= SHIP_SPEED;
+			//else if (state.keyboard[SDL_SCANCODE_DOWN] == KEY_REPEAT) state.ship_y += SHIP_SPEED;
+		}
+		else if (state.ship_x < 155&& state.keyboard[SDL_SCANCODE_RIGHT] == KEY_REPEAT && state.keyboard[SDL_SCANCODE_LEFT] == KEY_IDLE) {
+			state.ship_x = 155;
+		}
+		else if (state.ship_x > 155 && state.keyboard[SDL_SCANCODE_LEFT] == KEY_REPEAT && state.keyboard[SDL_SCANCODE_RIGHT] == KEY_IDLE){
+			state.ship_x = 680;
+		}
+=======
+=======
+>>>>>>> d7811b0c713d5a2f0e8be82884e7276d58951207
+>>>>>>> Stashed changes
 		if (state.keyboard[SDL_SCANCODE_LEFT] == KEY_REPEAT) state.ship_x -= SHIP_SPEED;
 		else if (state.keyboard[SDL_SCANCODE_RIGHT] == KEY_REPEAT) state.ship_x += SHIP_SPEED;
 		//if (state.keyboard[SDL_SCANCODE_UP] == KEY_REPEAT) state.ship_y -= SHIP_SPEED;
@@ -469,6 +504,13 @@ void MoveStuff()
 	else if (state.ship_x > 155 && state.keyboard[SDL_SCANCODE_LEFT] == KEY_REPEAT && state.keyboard[SDL_SCANCODE_RIGHT] == KEY_IDLE) {
 		state.ship_x = 680;
 	}
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+>>>>>>> d7811b0c713d5a2f0e8be82884e7276d58951207
+=======
+>>>>>>> d7811b0c713d5a2f0e8be82884e7276d58951207
+>>>>>>> Stashed changes
 
 		for (int i = 0; i < MAX_SHIP_SHOTS; ++i)
 		{
@@ -600,15 +642,25 @@ void MoveStuff()
 					}
 				}
 			}
+			//if(state.ship_x <= state.shots[i].x && state.shot_w && state.ship_x + state.ship_w >= state.shots[i].x && state.ship_y <= state.shots[i].y + state.shot_h && state.ship_h + state.ship_y >= state.shots[i].y)
+			//{
+			//	state.currentScreen = ENDING;
+			//	Mix_FadeOutMusic(100);
+			//}
+			if (state.ship_x< state.shots[i].x + state.shot_w && state.ship_x + state.ship_w>state.shots[i].x && state.ship_y<state.shots[i].y + state.shot_h && state.ship_h + state.ship_y>state.shots[i].y)
+			{
+				
+				state.shots[i].alive = false;
+				
+				state.currentScreen = ENDING;
+				Mix_FadeOutMusic(100);
+			}
 		}
 
 
 
-		// L4: TODO 4: Play sound fx_shoot
-		if (state.keyboard[SDL_SCANCODE_RETURN] == KEY_DOWN) {
-			state.currentScreen = ENDING;
-			Mix_FadeOutMusic(100);
-		}
+		
+		
 	}break;
 	// Update active shots
 
@@ -616,7 +668,7 @@ void MoveStuff()
 
 	case ENDING:
 	{
-		if (state.keyboard[SDL_SCANCODE_RETURN] == KEY_DOWN) {
+		if (state.keyboard[SDL_SCANCODE_SPACE] == KEY_DOWN) {
 			state.currentScreen = TITLE;
 
 		}
