@@ -35,9 +35,9 @@
 #define JOYSTICK_DEAD_ZONE  8000
 
 #define SHIP_SPEED			   8
-#define MAX_SHIP_SHOTS		 40
+#define MAX_SHIP_SHOTS		 32
 #define SHOT_SPEED		12
-#define SCROLL_SPEED		   19
+#define SCROLL_SPEED		   15
 
 enum WindowEvent
 {
@@ -189,135 +189,11 @@ void Start()
 
 				int a;
 
-				a = rand() % 6;
+				a = rand() % 5;
 
 				switch (a) {
 				case 0:
 
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 286;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 406;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 526;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 646;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 591;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-
-
-					break;
-
-				case 1:
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 166;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 406;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 526;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 646;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 591;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-
-					break;
-				case 2:
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 166;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 286;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 526;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 646;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 591;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					break;
-				case 3:
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 166;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 286;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 406;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 646;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 591;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					break;
-				case 4:
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 166;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 286;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 406;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 526;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					
-
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 591;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
-					break;
-				case 5:
-					state.shots[state.last_shot].alive = true;
-					state.shots[state.last_shot].x = 166;
-					state.shots[state.last_shot].y = -20;
-					state.last_shot++;
 					state.shots[state.last_shot].alive = true;
 					state.shots[state.last_shot].x = 251;
 					state.shots[state.last_shot].y = -20;
@@ -334,6 +210,89 @@ void Start()
 					state.shots[state.last_shot].x = 506;
 					state.shots[state.last_shot].y = -20;
 					state.last_shot++;
+
+
+					break;
+
+				case 1:
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 166;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 336;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 421;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 506;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+
+
+					break;
+				case 2:
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 166;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 251;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 421;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 506;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+
+					break;
+				case 3:
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 166;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 251;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 336;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 506;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+
+					break;
+				case 4:
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 166;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 251;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 336;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 421;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+
 
 
 					break;
@@ -531,23 +490,19 @@ void MoveStuff()
 					case 0:
 
 						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 286;
+						state.shots[state.last_shot].x = 251;
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
 						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 406;
+						state.shots[state.last_shot].x = 336;
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
 						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 526;
+						state.shots[state.last_shot].x = 421;
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
 						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 646;
-						state.shots[state.last_shot].y = -20;
-						state.last_shot++;
-						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 591;
+						state.shots[state.last_shot].x = 506;
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
 
@@ -562,21 +517,18 @@ void MoveStuff()
 						state.last_shot++;
 
 						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 406;
+						state.shots[state.last_shot].x = 336;
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
 						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 526;
+						state.shots[state.last_shot].x = 421;
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
 						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 646;
+						state.shots[state.last_shot].x = 506;
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
-						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 591;
-						state.shots[state.last_shot].y = -20;
-						state.last_shot++;
+
 
 
 						break;
@@ -586,23 +538,20 @@ void MoveStuff()
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
 						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 286;
+						state.shots[state.last_shot].x = 251;
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
 
 						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 526;
+						state.shots[state.last_shot].x = 421;
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
 						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 646;
+						state.shots[state.last_shot].x = 506;
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
 
-						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 591;
-						state.shots[state.last_shot].y = -20;
-						state.last_shot++;
+
 						break;
 					case 3:
 						state.shots[state.last_shot].alive = true;
@@ -610,46 +559,21 @@ void MoveStuff()
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
 						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 286;
+						state.shots[state.last_shot].x = 251;
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
 						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 406;
+						state.shots[state.last_shot].x = 336;
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
 
 						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 646;
+						state.shots[state.last_shot].x = 506;
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
-						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 591;
-						state.shots[state.last_shot].y = -20;
-						state.last_shot++;
+
 						break;
 					case 4:
-						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 166;
-						state.shots[state.last_shot].y = -20;
-						state.last_shot++;
-						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 286;
-						state.shots[state.last_shot].y = -20;
-						state.last_shot++;
-						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 406;
-						state.shots[state.last_shot].y = -20;
-						state.last_shot++;
-						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 526;
-						state.shots[state.last_shot].y = -20;
-						state.last_shot++;
-						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 591;
-						state.shots[state.last_shot].y = -20;
-						state.last_shot++;
-						break;
-					case 5:
 						state.shots[state.last_shot].alive = true;
 						state.shots[state.last_shot].x = 166;
 						state.shots[state.last_shot].y = -20;
@@ -664,10 +588,6 @@ void MoveStuff()
 						state.last_shot++;
 						state.shots[state.last_shot].alive = true;
 						state.shots[state.last_shot].x = 421;
-						state.shots[state.last_shot].y = -20;
-						state.last_shot++;
-						state.shots[state.last_shot].alive = true;
-						state.shots[state.last_shot].x = 506;
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
 						break;
