@@ -317,7 +317,11 @@ void MoveStuff()
 	{
 	case TITLE:
 	{
-		if (state.keyboard[SDL_SCANCODE_RETURN] == KEY_DOWN) state.currentScreen = GAMEPLAY;
+		Mix_FadeOutMusic(100);
+		if (state.keyboard[SDL_SCANCODE_RETURN] == KEY_DOWN) {
+			state.currentScreen = GAMEPLAY;
+			Mix_PlayMusic(state.music, -1);
+		}
 	} break;
 	case GAMEPLAY:
 	{
@@ -367,7 +371,7 @@ void MoveStuff()
 	{
 		if (state.keyboard[SDL_SCANCODE_RETURN] == KEY_DOWN) {
 			state.currentScreen = TITLE;
-			Mix_PlayMusic(state.music, -1);
+
 		}
 	} break;
 	default: break;
