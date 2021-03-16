@@ -27,7 +27,7 @@
 // Defines, Types and Globals
 // -------------------------------------------------------------------------
 #define SCREEN_WIDTH		901
-#define SCREEN_HEIGHT		1000
+#define SCREEN_HEIGHT		901
 
 #define MAX_KEYBOARD_KEYS	 256
 #define MAX_MOUSE_BUTTONS	   5
@@ -35,6 +35,7 @@
 
 #define SHIP_SPEED			   8
 #define MAX_SHIP_SHOTS		  32
+#define SHOT_SPEED		12
 #define SCROLL_SPEED		   5
 
 enum WindowEvent
@@ -53,6 +54,11 @@ enum KeyState
 	KEY_UP				// RELEASED (DOWN->DEFAULT)
 };
 
+struct Projectile
+{
+	int x, y;
+	bool alive;
+};
 
 // Global context to store our game state data
 struct GlobalState
@@ -75,6 +81,7 @@ struct GlobalState
 	// Texture variables
 	SDL_Texture* background;
 	SDL_Texture* ship;
+	SDL_Texture* shot;
 	int background_width;
 	int background_height;
 
@@ -85,6 +92,8 @@ struct GlobalState
 	int ship_x;
 	int ship_y;
 	int scroll;
+	Projectile shots[MAX_SHIP_SHOTS];
+	int last_shot;
 };
 
 // Global game state variable
@@ -132,6 +141,7 @@ void Start()
 	IMG_Init(IMG_INIT_PNG);
 	state.background = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/Definitivisimo.png"));
 	state.ship = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/ship.png"));
+	state.shot = SDL_CreateTextureFromSurface(state.renderer, IMG_Load("Assets/shot.png"));
 	SDL_QueryTexture(state.background, NULL, NULL, &state.background_width, &state.background_height);
 
 	// L4: TODO 1: Init audio system and load music/fx
@@ -147,6 +157,7 @@ void Start()
 	state.ship_x = SCREEN_WIDTH/ 2;
 	state.ship_y = SCREEN_HEIGHT / 1.3;
 	state.scroll = 0;
+	state.last_shot = 0;
 }
 
 // ----------------------------------------------------------------
@@ -301,7 +312,31 @@ void MoveStuff()
 	else {
 		state.ship_x = 680;
 	}
-        
+
+
+	if (state.keyboard[SDL_SCANCODE_SPACE] == KEY_DOWN)
+	{
+		if (state.last_shot == MAX_SHIP_SHOTS) state.last_shot = 0;
+
+		
+			state.shots[state.last_shot].alive = true;
+			state.shots[state.last_shot].x = 100;
+			state.shots[state.last_shot].y = 0;
+			state.last_shot++;
+		
+
+		// L4: TODO 4: Play sound fx_shoot
+
+	}
+	// Update active shots
+	for (int i = 0; i < MAX_SHIP_SHOTS; ++i)
+	{
+		if (state.shots[i].alive)
+		{
+			if (state.shots[i].y < SCREEN_HEIGHT) state.shots[i].y += SHOT_SPEED;
+			else state.shots[i].alive = false;
+		}
+	}
 	}
 
 	
@@ -333,7 +368,34 @@ void Draw()
 	SDL_RenderCopy(state.renderer, state.ship, NULL, &rec);
 
 	// L2: DONE 9: Draw active shots
+	rec.w = 64; rec.h = 64;
+	for (int i = 0; i < MAX_SHIP_SHOTS; ++i)
+	{
+		if (state.shots[i].alive)
+		{
+			//DrawRectangle(state.shots[i].x, state.shots[i].y, 50, 20, { 0, 250, 0, 255 });
 
+
+			rec.x = 166; rec.y = state.shots[i].y;
+			SDL_RenderCopy(state.renderer, state.shot, NULL, &rec);
+			rec.x = 251; rec.y = state.shots[i].y;
+			SDL_RenderCopy(state.renderer, state.shot, NULL, &rec);
+			rec.x = 336; rec.y = state.shots[i].y;
+			SDL_RenderCopy(state.renderer, state.shot, NULL, &rec);
+			rec.x = 421; rec.y = state.shots[i].y;
+			SDL_RenderCopy(state.renderer, state.shot, NULL, &rec);
+			rec.x =506; rec.y = state.shots[i].y;
+			SDL_RenderCopy(state.renderer, state.shot, NULL, &rec);
+			rec.x = 591; rec.y = state.shots[i].y;
+			SDL_RenderCopy(state.renderer, state.shot, NULL, &rec);
+			rec.x = 676; rec.y = state.shots[i].y;
+			SDL_RenderCopy(state.renderer, state.shot, NULL, &rec);
+			
+			
+
+		}
+	}
+	
 	// Finally present framebuffer
 	SDL_RenderPresent(state.renderer);
 }
