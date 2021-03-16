@@ -8,6 +8,7 @@
 #include <stdio.h>			// Required for: printf()
 #include <stdlib.h>			// Required for: EXIT_SUCCESS
 #include <math.h>			// Required for: sinf(), cosf()
+#include <time.h>
 
 // Include SDL libraries
 #include "SDL/include/SDL.h"				// Required for SDL base systems functionality
@@ -34,9 +35,9 @@
 #define JOYSTICK_DEAD_ZONE  8000
 
 #define SHIP_SPEED			   8
-#define MAX_SHIP_SHOTS		  32
+#define MAX_SHIP_SHOTS		 32
 #define SHOT_SPEED		12
-#define SCROLL_SPEED		   5
+#define SCROLL_SPEED		   15
 
 enum WindowEvent
 {
@@ -108,6 +109,7 @@ struct GlobalState
 
 // Global game state variable
 GlobalState state;
+int Contador=0;
 
 // Functions Declarations
 // Some helpful functions to draw basic shapes
@@ -121,6 +123,7 @@ static void DrawCircle(int x, int y, int radius, SDL_Color color);
 // -------------------------------------------------------------------------
 void Start()
 {
+
 	// Initialize SDL internal global state
 	SDL_Init(SDL_INIT_EVERYTHING);
 
@@ -171,6 +174,135 @@ void Start()
 	state.ship_y = SCREEN_HEIGHT / 1.3;
 	state.scroll = 0;
 	state.last_shot = 0;
+
+	srand(time(NULL));
+	if (state.last_shot == MAX_SHIP_SHOTS) state.last_shot = 0;
+
+	for (int i = 0; i < MAX_SHIP_SHOTS; ++i)
+	{
+		
+			
+
+
+				srand(time(NULL));
+				if (state.last_shot == MAX_SHIP_SHOTS) state.last_shot = 0;
+
+				int a;
+
+				a = rand() % 5;
+
+				switch (a) {
+				case 0:
+
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 251;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 336;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 421;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 506;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+
+
+					break;
+
+				case 1:
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 166;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 336;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 421;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 506;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+
+
+					break;
+				case 2:
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 166;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 251;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 421;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 506;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+
+					break;
+				case 3:
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 166;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 251;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 336;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 506;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+
+					break;
+				case 4:
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 166;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 251;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 336;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 421;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+
+
+
+					break;
+
+
+				}
+			
+		
+	}Contador++;
+
 }
 
 // ----------------------------------------------------------------
@@ -338,35 +470,150 @@ void MoveStuff()
 			state.ship_x = 680;
 		}
 
-
-		if (state.keyboard[SDL_SCANCODE_SPACE] == KEY_DOWN)
-		{
-			if (state.last_shot == MAX_SHIP_SHOTS) state.last_shot = 0;
-
-
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 100;
-			state.shots[state.last_shot].y = 0;
-			state.last_shot++;
-
-
-			// L4: TODO 4: Play sound fx_shoot
-
-		}
-		// Update active shots
 		for (int i = 0; i < MAX_SHIP_SHOTS; ++i)
 		{
 			if (state.shots[i].alive)
 			{
-				if (state.shots[i].y < SCREEN_HEIGHT) state.shots[i].y += SHOT_SPEED;
-				else state.shots[i].alive = false;
+				if (state.shots[i].y < SCREEN_HEIGHT) { state.shots[i].y += SHOT_SPEED; }
+				else if (state.shots[i].y > SCREEN_HEIGHT + 100) { state.shots[i].alive = false; }
+				else {
+
+
+					srand(time(NULL));
+					if (state.last_shot == MAX_SHIP_SHOTS) state.last_shot = 0;
+
+					int a;
+
+					a = rand() % 5;
+
+					switch (a) {
+					case 0:
+
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 251;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 336;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 421;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 506;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+
+
+
+						break;
+
+					case 1:
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 166;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 336;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 421;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 506;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+
+
+
+						break;
+					case 2:
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 166;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 251;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 421;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 506;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+
+
+						break;
+					case 3:
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 166;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 251;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 336;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 506;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+
+						break;
+					case 4:
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 166;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 251;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 336;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 421;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+						break;
+
+
+
+
+
+
+					}
+				}
 			}
 		}
+
+
+
+		// L4: TODO 4: Play sound fx_shoot
 		if (state.keyboard[SDL_SCANCODE_RETURN] == KEY_DOWN) {
 			state.currentScreen = ENDING;
 			Mix_FadeOutMusic(100);
 		}
-	} break;
+	}break;
+	// Update active shots
+
+	
+	
 	case ENDING:
 	{
 		if (state.keyboard[SDL_SCANCODE_RETURN] == KEY_DOWN) {
@@ -416,31 +663,14 @@ void Draw()
 		SDL_RenderCopy(state.renderer, state.ship, NULL, &rec);
 
 		// L2: DONE 9: Draw active shots
-		rec.w = 64; rec.h = 64;
+		rec.w = 86; rec.h = 124;
 		for (int i = 0; i < MAX_SHIP_SHOTS; ++i)
 		{
 			if (state.shots[i].alive)
 			{
 				//DrawRectangle(state.shots[i].x, state.shots[i].y, 50, 20, { 0, 250, 0, 255 });
-
-
-				rec.x = 166; rec.y = state.shots[i].y;
+				rec.x = state.shots[i].x; rec.y = state.shots[i].y;
 				SDL_RenderCopy(state.renderer, state.shot, NULL, &rec);
-				rec.x = 251; rec.y = state.shots[i].y;
-				SDL_RenderCopy(state.renderer, state.shot, NULL, &rec);
-				rec.x = 336; rec.y = state.shots[i].y;
-				SDL_RenderCopy(state.renderer, state.shot, NULL, &rec);
-				rec.x = 421; rec.y = state.shots[i].y;
-				SDL_RenderCopy(state.renderer, state.shot, NULL, &rec);
-				rec.x = 506; rec.y = state.shots[i].y;
-				SDL_RenderCopy(state.renderer, state.shot, NULL, &rec);
-				rec.x = 591; rec.y = state.shots[i].y;
-				SDL_RenderCopy(state.renderer, state.shot, NULL, &rec);
-				rec.x = 676; rec.y = state.shots[i].y;
-				SDL_RenderCopy(state.renderer, state.shot, NULL, &rec);
-
-
-
 			}
 		}
 
