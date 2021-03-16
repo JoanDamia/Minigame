@@ -96,6 +96,7 @@ struct GlobalState
 
 	// Audio variables
 	Mix_Music* music;
+	Mix_Music* ending;
 
 	// Game elements
 	int ship_x;
@@ -171,6 +172,7 @@ void Start()
 	Mix_Init(MIX_INIT_OGG);
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024);
 	state.music = Mix_LoadMUS("Assets/Music.ogg");
+	state.ending = Mix_LoadMUS("Assets/final.ogg");
 	// L4: TODO 2: Start playing loaded music
 	Mix_PlayMusic(state.music, -1);
 
@@ -614,6 +616,7 @@ void MoveStuff()
 			{
 				state.currentScreen = ENDING;
 				Mix_FadeOutMusic(100);
+				Mix_PlayMusic(state.ending, -1);
 			}
 		}
 
