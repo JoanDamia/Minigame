@@ -35,8 +35,8 @@
 #define JOYSTICK_DEAD_ZONE  8000
 
 #define SHIP_SPEED			   8
-#define MAX_SHIP_SHOTS		 32
-#define SHOT_SPEED		12
+#define MAX_SHIP_SHOTS		 40
+#define SHOT_SPEED		9
 #define SCROLL_SPEED		   15
 
 enum WindowEvent
@@ -506,7 +506,10 @@ void MoveStuff()
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
 
-
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 591;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
 
 						break;
 
@@ -528,7 +531,10 @@ void MoveStuff()
 						state.shots[state.last_shot].x = 506;
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
-
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 591;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
 
 
 						break;
@@ -550,7 +556,10 @@ void MoveStuff()
 						state.shots[state.last_shot].x = 506;
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
-
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 591;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
 
 						break;
 					case 3:
@@ -569,6 +578,10 @@ void MoveStuff()
 
 						state.shots[state.last_shot].alive = true;
 						state.shots[state.last_shot].x = 506;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 591;
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
 
@@ -590,12 +603,33 @@ void MoveStuff()
 						state.shots[state.last_shot].x = 421;
 						state.shots[state.last_shot].y = -20;
 						state.last_shot++;
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 591;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
 						break;
-
-
-
-
-
+					case 5:
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 166;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 251;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 336;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 421;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+						state.shots[state.last_shot].alive = true;
+						state.shots[state.last_shot].x = 506;
+						state.shots[state.last_shot].y = -20;
+						state.last_shot++;
+						break;
 
 					}
 				}
