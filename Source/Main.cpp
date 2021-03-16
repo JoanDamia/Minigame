@@ -458,17 +458,17 @@ void MoveStuff()
 	case GAMEPLAY:
 	{
 		if ((state.ship_x >= 155) && (state.ship_x <= 680)) {
-			if (state.keyboard[SDL_SCANCODE_LEFT] == KEY_REPEAT) state.ship_x -= SHIP_SPEED;
-			else if (state.keyboard[SDL_SCANCODE_RIGHT] == KEY_REPEAT) state.ship_x += SHIP_SPEED;
-			//if (state.keyboard[SDL_SCANCODE_UP] == KEY_REPEAT) state.ship_y -= SHIP_SPEED;
-			//else if (state.keyboard[SDL_SCANCODE_DOWN] == KEY_REPEAT) state.ship_y += SHIP_SPEED;
-		}
-		else if (state.ship_x < 155) {
-			state.ship_x = 155;
-		}
-		else {
-			state.ship_x = 680;
-		}
+		if (state.keyboard[SDL_SCANCODE_LEFT] == KEY_REPEAT) state.ship_x -= SHIP_SPEED;
+		else if (state.keyboard[SDL_SCANCODE_RIGHT] == KEY_REPEAT) state.ship_x += SHIP_SPEED;
+		//if (state.keyboard[SDL_SCANCODE_UP] == KEY_REPEAT) state.ship_y -= SHIP_SPEED;
+		//else if (state.keyboard[SDL_SCANCODE_DOWN] == KEY_REPEAT) state.ship_y += SHIP_SPEED;
+	}
+	else if (state.ship_x < 155 && state.keyboard[SDL_SCANCODE_RIGHT] == KEY_REPEAT && state.keyboard[SDL_SCANCODE_LEFT] == KEY_IDLE) {
+		state.ship_x = 155;
+	}
+	else if (state.ship_x > 155 && state.keyboard[SDL_SCANCODE_LEFT] == KEY_REPEAT && state.keyboard[SDL_SCANCODE_RIGHT] == KEY_IDLE) {
+		state.ship_x = 680;
+	}
 
 		for (int i = 0; i < MAX_SHIP_SHOTS; ++i)
 		{
