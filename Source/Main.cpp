@@ -67,6 +67,13 @@ struct Projectile
 	bool alive;
 };
 
+struct Ship
+{
+	int alive = 1;
+
+}p1;
+
+
 // Global context to store our game state data
 struct GlobalState
 {
@@ -109,15 +116,16 @@ struct GlobalState
 	int shot_y;
 	int shot_w;
 	int shot_h;
-	
-	
+
+
+
 
 	GameScreen currentScreen;		// 0-LOGO, 1-TITLE, 2-GAMEPLAY, 3-ENDING
 };
 
 // Global game state variable
 GlobalState state;
-int Contador = 0;
+int Contador=0;
 
 // Functions Declarations
 // Some helpful functions to draw basic shapes
@@ -131,7 +139,6 @@ static void DrawCircle(int x, int y, int radius, SDL_Color color);
 // -------------------------------------------------------------------------
 void Start()
 {
-
 	state.ship_w = 64;
 	state.ship_h = 64;
 	// Initialize SDL internal global state
@@ -180,9 +187,8 @@ void Start()
 
 
 	// Init game variables
-	state.ship_x = SCREEN_WIDTH / 2;
+	state.ship_x = SCREEN_WIDTH/ 2;
 	state.ship_y = SCREEN_HEIGHT / 1.3;
-	
 	state.scroll = 0;
 	state.last_shot = 0;
 
@@ -191,128 +197,127 @@ void Start()
 
 	for (int i = 0; i < MAX_SHIP_SHOTS; ++i)
 	{
+		
+			
 
 
-		state.shot_w = 64;
-		state.shot_h = 124;
+				srand(time(NULL));
+				if (state.last_shot == MAX_SHIP_SHOTS) state.last_shot = 0;
 
-		srand(time(NULL));
-		if (state.last_shot == MAX_SHIP_SHOTS) state.last_shot = 0;
+				int a;
 
-		int a;
+				a = rand() % 5;
 
-		a = rand() % 5;
+				switch (a) {
+				case 0:
 
-		switch (a) {
-		case 0:
-
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 286;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 406;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 526;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 646;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 286;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 406;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 526;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 646;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
 
 
-			break;
+					break;
 
-		case 1:
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 166;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
+				case 1:
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 166;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
 
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 406;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 526;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 646;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
-
-
-			break;
-		case 2:
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 166;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 286;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
-
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 526;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 646;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
-
-			break;
-		case 3:
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 166;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 286;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 406;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
-
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 646;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
-
-			break;
-		case 4:
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 166;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 286;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 406;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
-			state.shots[state.last_shot].alive = true;
-			state.shots[state.last_shot].x = 526;
-			state.shots[state.last_shot].y = -20;
-			state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 406;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 526;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 646;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
 
 
+					break;
+				case 2:
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 166;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 286;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
 
-			break;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 526;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 646;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+
+					break;
+				case 3:
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 166;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 286;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 406;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 646;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+
+					break;
+				case 4:
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 166;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 286;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 406;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					state.shots[state.last_shot].alive = true;
+					state.shots[state.last_shot].x = 526;
+					state.shots[state.last_shot].y = -20;
+					state.last_shot++;
+					
 
 
-		}
+					break;
 
 
+				}
+			
+		
 	}Contador++;
 
 }
@@ -326,7 +331,6 @@ void Finish()
 	Mix_Quit();
 
 	// Unload textures and deinitialize image system
-	SDL_DestroyTexture(state.shot);
 	SDL_DestroyTexture(state.background);
 	SDL_DestroyTexture(state.ship);
 	IMG_Quit();
@@ -348,21 +352,19 @@ void Finish()
 
 	// Free any game allocated memory
 	free(state.keyboard);
-
-
 }
 
 // ----------------------------------------------------------------
 bool CheckInput()
 {
 	// Update current mouse buttons state 
-	// considering previous mouse buttons state
+    // considering previous mouse buttons state
 	for (int i = 0; i < MAX_MOUSE_BUTTONS; ++i)
 	{
 		if (state.mouse_buttons[i] == KEY_DOWN) state.mouse_buttons[i] = KEY_REPEAT;
 		if (state.mouse_buttons[i] == KEY_UP) state.mouse_buttons[i] = KEY_IDLE;
 	}
-
+    
 	// Gather the state of all input devices
 	// WARNING: It modifies global keyboard and mouse state but 
 	// its precision may be not enough
@@ -378,61 +380,61 @@ bool CheckInput()
 	{
 		switch (event.type)
 		{
-		case SDL_QUIT: state.window_events[WE_QUIT] = true; break;
-		case SDL_WINDOWEVENT:
-		{
-			switch (event.window.event)
+			case SDL_QUIT: state.window_events[WE_QUIT] = true; break;
+			case SDL_WINDOWEVENT:
 			{
-				//case SDL_WINDOWEVENT_LEAVE:
-			case SDL_WINDOWEVENT_HIDDEN:
-			case SDL_WINDOWEVENT_MINIMIZED:
-			case SDL_WINDOWEVENT_FOCUS_LOST: state.window_events[WE_HIDE] = true; break;
-				//case SDL_WINDOWEVENT_ENTER:
-			case SDL_WINDOWEVENT_SHOWN:
-			case SDL_WINDOWEVENT_FOCUS_GAINED:
-			case SDL_WINDOWEVENT_MAXIMIZED:
-			case SDL_WINDOWEVENT_RESTORED: state.window_events[WE_SHOW] = true; break;
-			case SDL_WINDOWEVENT_CLOSE: state.window_events[WE_QUIT] = true; break;
+				switch (event.window.event)
+				{
+					//case SDL_WINDOWEVENT_LEAVE:
+					case SDL_WINDOWEVENT_HIDDEN:
+					case SDL_WINDOWEVENT_MINIMIZED:
+					case SDL_WINDOWEVENT_FOCUS_LOST: state.window_events[WE_HIDE] = true; break;
+					//case SDL_WINDOWEVENT_ENTER:
+					case SDL_WINDOWEVENT_SHOWN:
+					case SDL_WINDOWEVENT_FOCUS_GAINED:
+					case SDL_WINDOWEVENT_MAXIMIZED:
+					case SDL_WINDOWEVENT_RESTORED: state.window_events[WE_SHOW] = true; break;
+					case SDL_WINDOWEVENT_CLOSE: state.window_events[WE_QUIT] = true; break;
+					default: break;
+				}
+			} break;
+			// L2: DONE 4: Check mouse events for button state
+			case SDL_MOUSEBUTTONDOWN: state.mouse_buttons[event.button.button - 1] = KEY_DOWN; break;
+			case SDL_MOUSEBUTTONUP:	state.mouse_buttons[event.button.button - 1] = KEY_UP; break;
+			case SDL_MOUSEMOTION:
+			{
+				state.mouse_x = event.motion.x;
+				state.mouse_y = event.motion.y;
+			} break;
+			case SDL_JOYAXISMOTION:
+			{
+				// Motion on controller 0
+				if (event.jaxis.which == 0)
+				{
+					// X axis motion
+					if (event.jaxis.axis == 0)
+					{
+						if (event.jaxis.value < -JOYSTICK_DEAD_ZONE) state.gamepad_axis_x_dir = -1;
+						else if (event.jaxis.value > JOYSTICK_DEAD_ZONE) state.gamepad_axis_x_dir = 1;
+						else state.gamepad_axis_x_dir = 0;
+					}
+					// Y axis motion
+					else if (event.jaxis.axis == 1)
+					{
+						if (event.jaxis.value < -JOYSTICK_DEAD_ZONE) state.gamepad_axis_y_dir = -1;
+						else if (event.jaxis.value > JOYSTICK_DEAD_ZONE) state.gamepad_axis_y_dir = 1;
+						else state.gamepad_axis_y_dir = 0;
+					}
+				}
+			} break;
 			default: break;
-			}
-		} break;
-		// L2: DONE 4: Check mouse events for button state
-		case SDL_MOUSEBUTTONDOWN: state.mouse_buttons[event.button.button - 1] = KEY_DOWN; break;
-		case SDL_MOUSEBUTTONUP:	state.mouse_buttons[event.button.button - 1] = KEY_UP; break;
-		case SDL_MOUSEMOTION:
-		{
-			state.mouse_x = event.motion.x;
-			state.mouse_y = event.motion.y;
-		} break;
-		case SDL_JOYAXISMOTION:
-		{
-			// Motion on controller 0
-			if (event.jaxis.which == 0)
-			{
-				// X axis motion
-				if (event.jaxis.axis == 0)
-				{
-					if (event.jaxis.value < -JOYSTICK_DEAD_ZONE) state.gamepad_axis_x_dir = -1;
-					else if (event.jaxis.value > JOYSTICK_DEAD_ZONE) state.gamepad_axis_x_dir = 1;
-					else state.gamepad_axis_x_dir = 0;
-				}
-				// Y axis motion
-				else if (event.jaxis.axis == 1)
-				{
-					if (event.jaxis.value < -JOYSTICK_DEAD_ZONE) state.gamepad_axis_y_dir = -1;
-					else if (event.jaxis.value > JOYSTICK_DEAD_ZONE) state.gamepad_axis_y_dir = 1;
-					else state.gamepad_axis_y_dir = 0;
-				}
-			}
-		} break;
-		default: break;
 		}
 	}
 
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
 
 	// L2: DONE 5: Update keyboard keys state
-	// Consider previous keys states for KEY_DOWN and KEY_UP
+    // Consider previous keys states for KEY_DOWN and KEY_UP
 	for (int i = 0; i < MAX_KEYBOARD_KEYS; ++i)
 	{
 		// A value of 1 means that the key is pressed and a value of 0 means that it is not
@@ -472,50 +474,26 @@ void MoveStuff()
 	} break;
 	case GAMEPLAY:
 	{
-		
 		if ((state.ship_x >= 155) && (state.ship_x <= 680)) {
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
 			if (state.keyboard[SDL_SCANCODE_LEFT] == KEY_REPEAT) state.ship_x -= SHIP_SPEED;
 			else if (state.keyboard[SDL_SCANCODE_RIGHT] == KEY_REPEAT) state.ship_x += SHIP_SPEED;
 			//if (state.keyboard[SDL_SCANCODE_UP] == KEY_REPEAT) state.ship_y -= SHIP_SPEED;
 			//else if (state.keyboard[SDL_SCANCODE_DOWN] == KEY_REPEAT) state.ship_y += SHIP_SPEED;
 		}
-		else if (state.ship_x < 155&& state.keyboard[SDL_SCANCODE_RIGHT] == KEY_REPEAT && state.keyboard[SDL_SCANCODE_LEFT] == KEY_IDLE) {
+		else if (state.ship_x < 155 && state.keyboard[SDL_SCANCODE_RIGHT] == KEY_REPEAT && state.keyboard[SDL_SCANCODE_LEFT] == KEY_IDLE) {
 			state.ship_x = 155;
 		}
-		else if (state.ship_x > 155 && state.keyboard[SDL_SCANCODE_LEFT] == KEY_REPEAT && state.keyboard[SDL_SCANCODE_RIGHT] == KEY_IDLE){
+		else if (state.ship_x > 155 && state.keyboard[SDL_SCANCODE_LEFT] == KEY_REPEAT && state.keyboard[SDL_SCANCODE_RIGHT] == KEY_IDLE) {
 			state.ship_x = 680;
 		}
-=======
-=======
->>>>>>> d7811b0c713d5a2f0e8be82884e7276d58951207
->>>>>>> Stashed changes
-		if (state.keyboard[SDL_SCANCODE_LEFT] == KEY_REPEAT) state.ship_x -= SHIP_SPEED;
-		else if (state.keyboard[SDL_SCANCODE_RIGHT] == KEY_REPEAT) state.ship_x += SHIP_SPEED;
-		//if (state.keyboard[SDL_SCANCODE_UP] == KEY_REPEAT) state.ship_y -= SHIP_SPEED;
-		//else if (state.keyboard[SDL_SCANCODE_DOWN] == KEY_REPEAT) state.ship_y += SHIP_SPEED;
-	}
-	else if (state.ship_x < 155 && state.keyboard[SDL_SCANCODE_RIGHT] == KEY_REPEAT && state.keyboard[SDL_SCANCODE_LEFT] == KEY_IDLE) {
-		state.ship_x = 155;
-	}
-	else if (state.ship_x > 155 && state.keyboard[SDL_SCANCODE_LEFT] == KEY_REPEAT && state.keyboard[SDL_SCANCODE_RIGHT] == KEY_IDLE) {
-		state.ship_x = 680;
-	}
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
->>>>>>> d7811b0c713d5a2f0e8be82884e7276d58951207
-=======
->>>>>>> d7811b0c713d5a2f0e8be82884e7276d58951207
->>>>>>> Stashed changes
 
 		for (int i = 0; i < MAX_SHIP_SHOTS; ++i)
 		{
 			if (state.shots[i].alive)
 			{
+
+				
+			
 				if (state.shots[i].y < SCREEN_HEIGHT) { state.shots[i].y += SHOT_SPEED; }
 				else if (state.shots[i].y > SCREEN_HEIGHT + 100) { state.shots[i].alive = false; }
 				else {
@@ -642,16 +620,11 @@ void MoveStuff()
 					}
 				}
 			}
-			//if(state.ship_x <= state.shots[i].x && state.shot_w && state.ship_x + state.ship_w >= state.shots[i].x && state.ship_y <= state.shots[i].y + state.shot_h && state.ship_h + state.ship_y >= state.shots[i].y)
-			//{
-			//	state.currentScreen = ENDING;
-			//	Mix_FadeOutMusic(100);
-			//}
 			if (state.ship_x< state.shots[i].x + state.shot_w && state.ship_x + state.ship_w>state.shots[i].x && state.ship_y<state.shots[i].y + state.shot_h && state.ship_h + state.ship_y>state.shots[i].y)
 			{
-				
+
 				state.shots[i].alive = false;
-				
+
 				state.currentScreen = ENDING;
 				Mix_FadeOutMusic(100);
 			}
@@ -659,16 +632,25 @@ void MoveStuff()
 
 
 
-		
-		
+
+		// L4: TODO 4: Play sound fx_shoot
+		if (state.keyboard[SDL_SCANCODE_RETURN] == KEY_DOWN) {
+			state.currentScreen = ENDING;
+			Mix_FadeOutMusic(100);
+		}
+
+		if (p1.alive == 0) {
+			state.currentScreen = ENDING;
+			Mix_FadeOutMusic(100);
+		}
 	}break;
 	// Update active shots
 
-
-
+	
+	
 	case ENDING:
 	{
-		if (state.keyboard[SDL_SCANCODE_SPACE] == KEY_DOWN) {
+		if (state.keyboard[SDL_SCANCODE_RETURN] == KEY_DOWN) {
 			state.currentScreen = TITLE;
 
 		}
@@ -677,7 +659,7 @@ void MoveStuff()
 	}
 }
 
-
+	
 
 
 // ----------------------------------------------------------------
@@ -724,6 +706,7 @@ void Draw()
 				rec.x = state.shots[i].x; rec.y = state.shots[i].y;
 				SDL_RenderCopy(state.renderer, state.shot, NULL, &rec);
 			}
+
 		}
 
 	} break;
@@ -772,7 +755,7 @@ void DrawRectangle(int x, int y, int width, int height, SDL_Color color)
 	if (result != 0) printf("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
 }
 // -------------------------------------------------------------------------
-void Spawn(int x, int y, int width, int height, SDL_Color color) {
+void Spawn(int x, int y, int width, int height, SDL_Color color){
 	SDL_SetRenderDrawBlendMode(state.renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(state.renderer, color.r, color.g, color.b, color.a);
 
